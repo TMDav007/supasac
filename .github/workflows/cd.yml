@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to development url
 
         if: github.ref == 'refs/heads/develop'
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@4.4.3
         with:
           branch: gh-pages
           folder: dist
