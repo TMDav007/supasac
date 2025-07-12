@@ -1,0 +1,87 @@
+/****** Utils ******/
+//  @use "utils/variables" as * ;
+// @use "utils/mixins";
+
+// @import "utils/variables";
+
+@use "components/button" as *;
+@use "components/boostrap" as *;
+
+
+
+// /******* Base *******/
+@use "base/base";
+@use "base/background";
+
+// /******* Components ******/
+ @use "components/avatar";
+
+
+// @import "components/badge";
+// @import "components/border";
+// @import "components/calendar";
+// @import "components/chart";
+// @import "components/dropdown";
+   @use "components/icons";
+// @import "components/progress";
+// @import "components/pagination";
+   @use "components/font";
+   @use "components/typography";
+// @import "components/alerts";
+// @import "components/popovers";
+   @use "components/forms";
+// @import "components/tables";
+// @import "components/accordion";
+// @import "components/breadcrumb";
+// @import "components/cards";
+// @import "components/tooltips";
+// @import "components/navs-tabs";
+// @import "components/ribbon";
+// @import "components/popup";
+// @import "components/grid";
+
+// /******* Vendors ******/
+// @import "vendors/select2";
+// @import "vendors/datatables";
+
+// /****** Layout ******/
+ @use "layout/content";
+ @use "layout/common";
+// @import "layout/darktheme";
+ @use "layout/header";
+// @import "layout/loader";
+// @import "layout/sidebar";
+// @import "layout/notification";
+// @import "layout/theme";
+// @import "layout/theme-setting";
+// @import "layout/theme-color";
+
+// /****** Pages ******/
+// // @import "pages/chat";
+// @import "pages/dashboard";
+// // @import "pages/sales-dashboard";
+// // @import "pages/admin-dashboard";
+// // @import "pages/email";
+// @import "pages/error";
+@use "pages/login";
+// // @import "pages/product";
+// // @import "pages/pos";
+// // @import "pages/profile";
+// // @import "pages/stocks";
+// @import "pages/product-list";
+// @import "pages/add-product";
+// // @import "pages/notes";
+// // @import "pages/barcode";
+// @import "pages/employees-grid";
+// // @import "pages/todo-inbox";
+// @import "pages/transfer-list.scss";
+// // @import "pages/attendance-employee";
+// @import "pages/settings";
+// @import "pages/pos-design";
+// @import "pages/call";
+// // @import "pages/file-manager";
+// @import "pages/ui-pages";
+// // @import "pages/social-feed";
+// @import "pages/super-admin";
+// @import "pages/wishlist";
+// @import "pages/blogs";
