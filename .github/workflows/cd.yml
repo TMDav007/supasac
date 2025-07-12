@@ -1,0 +1,42 @@
+name: Continue Deployment
+
+#this trigger CI on push and PR for master branch only
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.9.0'
+
+      - name: Install Deps
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to development url
+
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@4
+        with:
+          branch: gh-pages
+          folder: dist
