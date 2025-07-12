@@ -7,7 +7,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js';
 // import '../src/style/css/feather.css';
 import '../src/style/css/line-awesome.min.css';
-import '../src/style/icons/tabler-icons/webfont/tabler-icons.css';
+// import '../src/style/icons/tabler-icons/webfont/tabler-icons.css';
 import '../src/style/scss/main.scss';
 //import "../src/customStyle.scss";
 import '../src/style/icons/fontawesome/css/fontawesome.min.css';
