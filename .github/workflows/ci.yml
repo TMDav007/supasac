@@ -1,0 +1,42 @@
+name: Continue Integration
+
+#this trigger CI on push and PR for master branch only
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.9.0'
+
+      - name: Install Deps
+        run: npm install
+
+      - name: Run linters
+        run: npm run lint
+
+      - name: Run formatters
+        run: npm run format
+
+      - name: Check commit messages
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: commitlint.config.cjs
+
+
