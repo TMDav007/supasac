@@ -36,7 +36,8 @@ jobs:
       - name: Deploy to development url
 
         if: github.ref == 'refs/heads/develop'
-        uses: JamesIves/github-pages-deploy-action@4.4.3
-        with:
-          branch: gh-pages
-          folder: dist
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+            npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
