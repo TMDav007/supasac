@@ -1,0 +1,5 @@
+export const USER_ROLE = {
+  MERCHANT: 'MERCHANT',
+  CUSTOMER: 'CUSTOMER',
+  ADMIN: 'SUPER_ADMIN',
+};
