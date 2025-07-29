@@ -1,0 +1,1 @@
+import{i as e,j as s}from"./index-Bmh_l0rI.js";const c=t=>{const a=String(t.alt),i=`${e}${t.src}`;return s.jsx("img",{className:t.className,src:i,height:t.height,alt:a,width:t.width,id:t.id})};export{c as I};
