@@ -1,3 +1,6 @@
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
+
 .sidebar,.settings-sidebar {
     display: block;
     background-color: $white;

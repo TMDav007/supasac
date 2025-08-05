@@ -1,7 +1,9 @@
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { pagesRoute } from './router.link';
+import { adminRoutes, pagesRoute } from './router.link';
 import AuthPages from './authPages';
+import AdminPages from './adminPages';
+import HeaderLayouts from './headerLayout';
 
 const AllRoutes = () => {
   return (
@@ -18,6 +20,13 @@ const AllRoutes = () => {
             <Route path={route.path} element={route.element} key={id} />
           ))}
         </Route> */}
+
+          <Route element={<HeaderLayouts />}>
+            {adminRoutes.map((route, id) => (
+              <Route path={route.path} element={route.element} key={id} />
+            ))}
+          </Route>
+
           <Route element={<AuthPages />}>
             {pagesRoute.map((route, id) => (
               <Route path={route.path} element={route.element} key={id} />

@@ -1,3 +1,6 @@
+
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
 @use "sass:color";
 
 .layout-box-mode {
@@ -9768,7 +9771,7 @@ body {
         .btn-close {
           color: $text-color;
           &.custom-close {
-            @include custom-close($darkmode-light);
+            //@include custom-close($darkmode-light);
           }
         }
     }
