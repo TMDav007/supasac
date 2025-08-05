@@ -1,4 +1,6 @@
 @use "sass:color";
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
 
 .modal-barcode {
     ul {

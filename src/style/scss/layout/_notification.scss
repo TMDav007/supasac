@@ -1,3 +1,6 @@
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
+
 .topnav-dropdown-header{
     border-bottom: 1px solid $border-color;
     text-align: center;

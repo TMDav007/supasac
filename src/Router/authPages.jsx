@@ -32,7 +32,7 @@ const AuthPages = () => {
   }
 
   if (userInfo && userInfo.role === USER_ROLE.ADMIN && isAdminOnAuthPage) {
-    return <Navigate to={location.state?.from || '/admin'} />;
+    return <Navigate to={location.state?.from || '/admin/dashboard'} />;
   }
 
   return <Outlet />;

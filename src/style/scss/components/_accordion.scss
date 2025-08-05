@@ -1,3 +1,6 @@
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
+
 .accordion-button {
     background-color: $white;
     color: $text-color;

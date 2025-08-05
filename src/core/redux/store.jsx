@@ -2,13 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducer';
 import { authApiSlice } from './api/admin/authApiSlice';
 import authReducer from './auth/authSlice';
+import themeSettingSlice from './themeSettingSlice';
 
 const store = configureStore({
   reducer: {
     rootReducer: rootReducer,
     auth: authReducer,
+    themeSetting: themeSettingSlice,
     [authApiSlice.reducerPath]: authApiSlice.reducer,
-    // themeSetting: themeSettingSlice,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(authApiSlice.middleware);

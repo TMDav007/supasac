@@ -1,4 +1,5 @@
-
+@use "./../utils/variables" as *;
+@use './../utils/mixins' as *;
 
 [data-color="lunargreen"]{
     $primary: #D63031;
