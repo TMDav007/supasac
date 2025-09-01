@@ -51,7 +51,7 @@ const Datatable = ({ props, columns, dataSource }) => {
         className="table datanew dataTable no-footer"
         rowSelection={rowSelection}
         columns={columns}
-        dataSource={filteredDataSource}
+        dataSource={dataSource}
         rowKey={(record) => record.id}
         pagination={{
           locale: { items_per_page: '' },

@@ -6,18 +6,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../../../utils/schema';
 import { useLoginMutation } from '../../../core/redux/api/admin/authApiSlice';
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { setCredentials } from '../../../core/redux/auth/authSlice';
 
 function Signin({ superAdminSignin }) {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevState) => !prevState);
   };
-  const dispatch = useDispatch();
   const route = all_routes;
-
+  //  const navigate = useNavigate()
   const [login] = useLoginMutation();
 
   const {
@@ -30,14 +27,12 @@ function Signin({ superAdminSignin }) {
 
   const onSubmit = async (formData) => {
     try {
-      const res = await login(formData).unwrap();
+      await login(formData).unwrap();
       toast.success('login successfully', {
         autoClose: 2000,
         closeOnClick: true,
         theme: 'light',
       });
-      dispatch(setCredentials(res.data.userInfo));
-      localStorage.setItem('token', res.data.accessToken);
     } catch (err) {
       toast.error(err?.data?.message);
     }
@@ -64,7 +59,7 @@ function Signin({ superAdminSignin }) {
                   <div className="login-userheading">
                     <h3>Sign In</h3>
                     <h4 className="fs-16">
-                      Access the Dreamspos panel using your email and passcode.
+                      Access the Supasack using your email and passcode.
                     </h4>
                   </div>
                   <div className="mb-3">
@@ -204,7 +199,7 @@ function Signin({ superAdminSignin }) {
                     </>
                   )}
                   <div className="my-4 position-absolute bottom-0 start-50 translate-middle-x copyright-text">
-                    <p>Copyright © 2025 DreamsPOS</p>
+                    <p>Copyright © 2025 Supasack</p>
                   </div>
                 </div>
               </form>

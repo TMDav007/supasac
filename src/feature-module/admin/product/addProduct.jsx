@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { all_routes } from '../../../Router/all_routes';
-import RefreshIcon from '../../../core/common/tooltip-content/refresh';
-import CollapesIcon from '../../../core/common/tooltip-content/collapes';
 import Select from 'react-select';
 import { DatePicker } from 'antd';
 import {
@@ -16,18 +13,19 @@ import {
   X,
 } from 'feather-icons-react/build/IconComponents';
 import TextEditor from './texteditor';
-import Addunits from '../../../core/modal/inventory/addunits';
-import AddCategory from '../../../core/modal/inventory/addcategory';
-import AddBrand from '../../../core/modal/addbrand';
-import AddVariant from '../../../core/modal/inventory/addvariant';
-import AddVarientNew from '../../../core/modal/inventory/addVarientNew';
+import Addunits from '../../../core/modals/inventory/addunits';
+import AddCategory from '../../../core/modals/inventory/addcategory';
+import AddBrand from '../../../core/modals/addbrand';
+import AddVariant from '../../../core/modals/inventory/addvariant';
+import AddVarientNew from '../../../core/modals/inventory/addVarientNew';
 import CommonTagsInput from '../../../core/common/Taginput';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ImageWithBasePath from '../../../core/img/imagewithbasebath';
 
 const AddProduct = () => {
-  const route = all_routes;
+  // const route = all_routes;
+  const navigate = useNavigate();
   const [tags, setTags] = useState(['Red', 'Black']);
   const [product, setProduct] = useState(false);
   const [product2, setProduct2] = useState(true);
@@ -37,12 +35,6 @@ const AddProduct = () => {
     { value: 'thomas', label: 'Thomas' },
     { value: 'rasmussen', label: 'Rasmussen' },
     { value: 'fredJohn', label: 'Fred John' },
-  ];
-  const warehouse = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'legendary', label: 'Legendary' },
-    { value: 'determined', label: 'Determined' },
-    { value: 'sincere', label: 'Sincere' },
   ];
   const category = [
     { value: 'choose', label: 'Choose' },
@@ -54,47 +46,12 @@ const AddProduct = () => {
     { value: 'lenovo', label: 'Lenovo' },
     { value: 'electronics', label: 'Electronics' },
   ];
-
-  const brand = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'nike', label: 'Nike' },
-    { value: 'bolt', label: 'Bolt' },
-  ];
   const unit = [
     { value: 'choose', label: 'Choose' },
     { value: 'kg', label: 'Kg' },
     { value: 'pc', label: 'Pc' },
   ];
-  const sellingtype = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'transactionalSelling', label: 'Transactional selling' },
-    { value: 'solutionSelling', label: 'Solution selling' },
-  ];
-  const barcodesymbol = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'code34', label: 'Code34' },
-    { value: 'code35', label: 'Code35' },
-    { value: 'code36', label: 'Code36' },
-  ];
-  const taxtype = [
-    { value: 'exclusive', label: 'Exclusive' },
-    { value: 'salesTax', label: 'Sales Tax' },
-  ];
-  const discounttype = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'percentage', label: 'Percentage' },
-    { value: 'cash', label: 'Cash' },
-  ];
 
-  const warrenty = [
-    { value: 'choose', label: 'Choose' },
-    { value: 'Replacement Warranty', label: 'Replacement Warranty' },
-    { value: 'On-Site Warranty', label: 'On-Site Warranty' },
-    {
-      value: 'Accidental Protection Plan',
-      label: 'Accidental Protection Plan',
-    },
-  ];
   const [isImageVisible, setIsImageVisible] = useState(true);
 
   const handleRemoveProduct = () => {
@@ -117,14 +74,14 @@ const AddProduct = () => {
               </div>
             </div>
             <ul className="table-top-head">
-              <RefreshIcon />
-              <CollapesIcon />
+              {/* <RefreshIcon />
+              <CollapesIcon /> */}
               <li>
-                <div className="page-btn">
-                  <Link to={route.productlist} className="btn btn-secondary">
+                <div className="page-btn" onClick={() => navigate(-1)}>
+                  <span className="btn btn-secondary">
                     <ArrowLeft className="me-2" />
-                    Back to Product
-                  </Link>
+                    Back to Store
+                  </span>
                 </div>
               </li>
             </ul>
@@ -175,25 +132,38 @@ const AddProduct = () => {
                         <div className="col-sm-6 col-12">
                           <div className="mb-3">
                             <label className="form-label">
-                              Warehouse
+                              Product Name
                               <span className="text-danger ms-1">*</span>
                             </label>
-                            <Select
-                              classNamePrefix="react-select"
-                              options={warehouse}
-                              placeholder="Choose"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-sm-6 col-12">
                           <div className="mb-3">
-                            <label className="form-label">
-                              Product Name
-                              <span className="text-danger ms-1">*</span>
-                            </label>
-                            <input type="text" className="form-control" />
+                            <div className="add-newplus">
+                              <label className="form-label">
+                                Category
+                                <span className="text-danger ms-1">*</span>
+                              </label>
+                              <Link
+                                to="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#add-units-category"
+                              >
+                                <PlusCircle
+                                  data-feather="plus-circle"
+                                  className="plus-down-add"
+                                />
+                                <span>Add New</span>
+                              </Link>
+                            </div>
+                            <Select
+                              classNamePrefix="react-select"
+                              options={category}
+                              placeholder="Choose"
+                            />
                           </div>
                         </div>
                         <div className="col-sm-6 col-12">
@@ -207,7 +177,7 @@ const AddProduct = () => {
                       </div>
                       <div className="row">
                         <div className="col-sm-6 col-12">
-                          <div className="mb-3 list position-relative">
+                          {/* <div className="mb-3 list position-relative">
                             <label className="form-label">
                               SKU<span className="text-danger ms-1">*</span>
                             </label>
@@ -218,10 +188,10 @@ const AddProduct = () => {
                             >
                               Generate
                             </button>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="col-sm-6 col-12">
-                          <div className="mb-3">
+                          {/* <div className="mb-3">
                             <label className="form-label">
                               Selling Type
                               <span className="text-danger ms-1">*</span>
@@ -231,37 +201,12 @@ const AddProduct = () => {
                               options={sellingtype}
                               placeholder="Choose"
                             />
-                          </div>
+                          </div> */}
                         </div>
                       </div>
+
                       <div className="addservice-info">
                         <div className="row">
-                          <div className="col-sm-6 col-12">
-                            <div className="mb-3">
-                              <div className="add-newplus">
-                                <label className="form-label">
-                                  Category
-                                  <span className="text-danger ms-1">*</span>
-                                </label>
-                                <Link
-                                  to="#"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#add-units-category"
-                                >
-                                  <PlusCircle
-                                    data-feather="plus-circle"
-                                    className="plus-down-add"
-                                  />
-                                  <span>Add New</span>
-                                </Link>
-                              </div>
-                              <Select
-                                classNamePrefix="react-select"
-                                options={category}
-                                placeholder="Choose"
-                              />
-                            </div>
-                          </div>
                           <div className="col-sm-6 col-12">
                             <div className="mb-3">
                               <label className="form-label">
@@ -271,25 +216,6 @@ const AddProduct = () => {
                               <Select
                                 classNamePrefix="react-select"
                                 options={subcategory}
-                                placeholder="Choose"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="add-product-new">
-                        <div className="row">
-                          <div className="col-sm-6 col-12">
-                            <div className="mb-3">
-                              <div className="add-newplus">
-                                <label className="form-label">
-                                  Brand
-                                  <span className="text-danger ms-1">*</span>
-                                </label>
-                              </div>
-                              <Select
-                                classNamePrefix="react-select"
-                                options={brand}
                                 placeholder="Choose"
                               />
                             </div>
@@ -311,8 +237,42 @@ const AddProduct = () => {
                           </div>
                         </div>
                       </div>
+                      <div className="add-product-new">
+                        <div className="row">
+                          {/* <div className="col-sm-6 col-12">
+                            <div className="mb-3">
+                              <div className="add-newplus">
+                                <label className="form-label">
+                                  Brand
+                                  <span className="text-danger ms-1">*</span>
+                                </label>
+                              </div>
+                              <Select
+                                classNamePrefix="react-select"
+                                options={brand}
+                                placeholder="Choose"
+                              />
+                            </div>
+                          </div> */}
+                          <div className="col-sm-6 col-12">
+                            {/* <div className="mb-3">
+                              <div className="add-newplus">
+                                <label className="form-label">
+                                  Unit
+                                  <span className="text-danger ms-1">*</span>
+                                </label>
+                              </div>
+                              <Select
+                                classNamePrefix="react-select"
+                                options={unit}
+                                placeholder="Choose"
+                              />
+                            </div> */}
+                          </div>
+                        </div>
+                      </div>
                       <div className="row">
-                        <div className="col-lg-6 col-sm-6 col-12">
+                        {/* <div className="col-lg-6 col-sm-6 col-12">
                           <div className="mb-3">
                             <label className="form-label">
                               Barcode Symbology
@@ -324,8 +284,8 @@ const AddProduct = () => {
                               placeholder="Choose"
                             />
                           </div>
-                        </div>
-                        <div className="col-lg-6 col-sm-6 col-12">
+                        </div> */}
+                        {/* <div className="col-lg-6 col-sm-6 col-12">
                           <div className="mb-3 list position-relative">
                             <label className="form-label">
                               Item Code
@@ -339,7 +299,7 @@ const AddProduct = () => {
                               Generate
                             </button>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                       {/* Editor */}
                       <div className="col-lg-12">
@@ -379,7 +339,7 @@ const AddProduct = () => {
                     aria-labelledby="headingSpacingTwo"
                   >
                     <div className="accordion-body border-top">
-                      <div className="mb-3s">
+                      {/* <div className="mb-3s">
                         <label className="form-label">
                           Product Type
                           <span className="text-danger ms-1">*</span>
@@ -428,7 +388,7 @@ const AddProduct = () => {
                             </li>
                           </ul>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="tab-content" id="pills-tabContent">
                         <div
                           className="tab-pane fade show active"
@@ -456,8 +416,15 @@ const AddProduct = () => {
                                   <input type="text" className="form-control" />
                                 </div>
                               </div>
-                              <div className="col-lg-4 col-sm-6 col-12">
+                              <div className="col-lg-4 col-sm-12 col-12">
                                 <div className="mb-3">
+                                  <label className="form-label">
+                                    Discount Value
+                                    <span className="text-danger ms-1">*</span>
+                                  </label>
+                                  <input className="form-control" type="text" />
+                                </div>
+                                {/* <div className="mb-3">
                                   <label className="form-label">
                                     Tax Type
                                     <span className="text-danger ms-1">*</span>
@@ -467,10 +434,10 @@ const AddProduct = () => {
                                     options={taxtype}
                                     placeholder="Select Option"
                                   />
-                                </div>
+                                </div> */}
                               </div>
                               <div className="col-lg-4 col-sm-6 col-12">
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                   <label className="form-label">
                                     Discount Type
                                     <span className="text-danger ms-1">*</span>
@@ -480,18 +447,9 @@ const AddProduct = () => {
                                     options={discounttype}
                                     placeholder="Choose"
                                   />
-                                </div>
+                                </div> */}
                               </div>
-                              <div className="col-lg-4 col-sm-6 col-12">
-                                <div className="mb-3">
-                                  <label className="form-label">
-                                    Discount Value
-                                    <span className="text-danger ms-1">*</span>
-                                  </label>
-                                  <input className="form-control" type="text" />
-                                </div>
-                              </div>
-                              <div className="col-lg-4 col-sm-6 col-12">
+                              <div className="col-lg-12 col-sm-12 col-12">
                                 <div className="mb-3">
                                   <label className="form-label">
                                     Quantity Alert
@@ -499,6 +457,15 @@ const AddProduct = () => {
                                   </label>
                                   <input type="text" className="form-control" />
                                 </div>
+                              </div>
+                              <div className="col-lg-4 col-sm-6 col-12">
+                                {/* <div className="mb-3">
+                                  <label className="form-label">
+                                    Quantity Alert
+                                    <span className="text-danger ms-1">*</span>
+                                  </label>
+                                  <input type="text" className="form-control" />
+                                </div> */}
                               </div>
                             </div>
                           </div>
@@ -860,7 +827,7 @@ const AddProduct = () => {
                   >
                     <div className="accordion-body border-top">
                       <div>
-                        <div className="p-3 bg-light rounded d-flex align-items-center border mb-3">
+                        {/* <div className="p-3 bg-light rounded d-flex align-items-center border mb-3">
                           <div className=" d-flex align-items-center">
                             <div className="form-check form-check-inline">
                               <input
@@ -905,9 +872,9 @@ const AddProduct = () => {
                               </label>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="row">
-                          <div className="col-sm-6 col-12">
+                          {/* <div className="col-sm-6 col-12">
                             <div className="mb-3">
                               <label className="form-label">
                                 Warranty
@@ -919,12 +886,12 @@ const AddProduct = () => {
                                 placeholder="Choose"
                               />
                             </div>
-                          </div>
-                          <div className="col-sm-6 col-12">
+                          </div> */}
+                          <div className="col-sm-12 col-12">
                             <div className="mb-3 add-product">
                               <label className="form-label">
                                 Manufacturer
-                                <span className="text-danger ms-1">*</span>
+                                {/* <span className="text-danger ms-1">*</span> */}
                               </label>
                               <input type="text" className="form-control" />
                             </div>
@@ -983,12 +950,12 @@ const AddProduct = () => {
         </div>
         <div className="footer d-sm-flex align-items-center justify-content-between border-top bg-white p-3">
           <p className="mb-0 text-gray-9">
-            2014 - 2025 © DreamsPOS. All Right Reserved
+            2025 © Supasack. All Right Reserved
           </p>
           <p>
             Designed &amp; Developed by{' '}
             <Link to="#" className="text-primary">
-              Dreams
+              Supasack
             </Link>
           </p>
         </div>

@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { DatePicker } from 'antd';
 import ReactApexChart from 'react-apexcharts';
 import ImageWithBasePath from '../../../core/img/imagewithbasebath';
-import Select from 'react-select';
-import TooltipIcons from '../../../core/common/tooltip-content/tooltipIcons';
-import RefreshIcon from '../../../core/common/tooltip-content/refresh';
-import CollapesIcon from '../../../core/common/tooltip-content/collapes';
 import CommonFooter from '../../../core/common/footer/commonFooter';
-import PredefinedDateRanges from '../../../core/common/range-picker/datePicker';
-import { companies_details } from '../../../core/json/companiesdetails';
 import Table from '../../../core/pagination/datatable';
-// type PasswordField = "password" | "confirmPassword";
+import {
+  useDeleteStoreMutation,
+  useGetStoresQuery,
+} from '../../../core/redux/api/admin/storeApiSlice';
+import moment from 'moment';
+import CommonDeleteModal from '../../../core/common/modal/commonDeleteModal';
 
 const Stores = () => {
   const navigate = useNavigate();
-  const data = companies_details;
+  const [storeId, setStoreId] = useState('');
+  const [deleteStore] = useDeleteStoreMutation();
+
   const columns = [
     {
       title: 'Store Name',
-      dataIndex: 'StoreName',
-      render: (text, record) => (
+      dataIndex: 'brand_name',
+      render: (record, text) => (
         <div className="d-flex align-items-center file-name-icon">
-          <Link to="#" className="avatar avatar-md border rounded-circle">
+          {/* <Link to="#" className="avatar avatar-md border rounded-circle">
             <ImageWithBasePath
               src={`assets/img/Store/${record.Image}`}
               className="img-fluid"
               alt="img"
             />
-          </Link>
+          </Link> */}
           <div className="ms-2">
             <h6 className="fw-medium">
               <Link to="#">{text}</Link>
@@ -36,47 +36,25 @@ const Stores = () => {
           </div>
         </div>
       ),
-      sorter: (a, b) => a.StoreName.length - b.StoreName.length,
+      sorter: (a, b) => a.brand_name.length - b.brand_name.length,
     },
     {
       title: 'Email',
-      dataIndex: 'Email',
+      dataIndex: 'email',
       sorter: (a, b) => a.Email.length - b.Email.length,
     },
     {
-      title: 'Account URL',
-      dataIndex: 'AccountURL',
-      sorter: (a, b) => a.AccountURL.length - b.AccountURL.length,
-    },
-    {
-      title: 'Plan',
-      dataIndex: 'Plan',
-      render: (text) => (
-        <div className="d-flex align-items-center justify-content-between">
-          <p className="mb-0 me-2">{text}</p>
-          <Link
-            to="#"
-            data-bs-toggle="modal"
-            className="badge badge-purple badge-xs"
-            data-bs-target="#upgrade_info"
-          >
-            Upgrade
-          </Link>
-        </div>
-      ),
-      sorter: (a, b) => a.Plan.length - b.Plan.length,
-    },
-    {
       title: 'Created Date',
-      dataIndex: 'CreatedDate',
+      dataIndex: 'created_at',
+      render: (text) => moment(text).format('DD MMM YYYY'),
       sorter: (a, b) => a.CreatedDate.length - b.CreatedDate.length,
     },
     {
       title: 'Status',
-      dataIndex: 'Status',
+      dataIndex: 'status',
       render: (text) => (
         <span
-          className={`badge ${text === 'Active' ? 'badge-success' : 'badge-danger'} d-inline-flex align-items-center badge-xs`}
+          className={`badge ${text === 'Active' ? 'badge-success' : 'badge-primary'} d-inline-flex align-items-center badge-xs`}
         >
           <i className="ti ti-point-filled me-1" />
           {text}
@@ -87,7 +65,7 @@ const Stores = () => {
     {
       title: '',
       dataIndex: 'actions',
-      render: () => (
+      render: (record, key) => (
         <div className="action-icon d-inline-flex align-items-center">
           <Link
             to="#"
@@ -97,19 +75,19 @@ const Stores = () => {
           >
             <i className="ti ti-eye" />
           </Link>
-          <Link
+          <span
             to="#"
             className="p-2 d-flex align-items-center border rounded me-2"
-            data-bs-toggle="modal"
-            data-bs-target="#edit_Store"
+            onClick={() => navigate(`/admin/store/${key?.id}`)}
           >
             <i className="ti ti-edit" />
-          </Link>
+          </span>
           <Link
             to="#"
             className="p-2 d-flex align-items-center border rounded"
             data-bs-toggle="modal"
-            data-bs-target="#delete_modal"
+            data-bs-target="#delete-modal"
+            onClick={() => setStoreId(key.id)}
           >
             <i className="ti ti-trash" />
           </Link>
@@ -117,45 +95,8 @@ const Stores = () => {
       ),
     },
   ];
-  const storeId = 1;
-  const [passwordVisibility, setPasswordVisibility] = useState({
-    password: false,
-    confirmPassword: false,
-  });
 
-  const togglePasswordVisibility = (field) => {
-    setPasswordVisibility((prevState) => ({
-      ...prevState,
-      [field]: !prevState[field],
-    }));
-  };
-
-  const planName = [
-    { value: 'Advanced', label: 'Advanced' },
-    { value: 'Basic', label: 'Basic' },
-    { value: 'Enterprise', label: 'Enterprise' },
-  ];
-  const planType = [
-    { value: 'Monthly', label: 'Monthly' },
-    { value: 'Yearly', label: 'Yearly' },
-  ];
-  const currency = [
-    { value: 'USD', label: 'USD' },
-    { value: 'Euro', label: 'Euro' },
-  ];
-  const language = [
-    { value: 'English', label: 'English' },
-    { value: 'Arabic', label: 'Arabic' },
-  ];
-  const statusChoose = [
-    { value: 'Active', label: 'Active' },
-    { value: 'Inactive', label: 'Inactive' },
-  ];
-
-  const getModalContainer = () => {
-    const modalElement = document.getElementById('modal-datepicker');
-    return modalElement ? modalElement : document.body; // Fallback to document.body if modalElement is null
-  };
+  const { data: stores = [] } = useGetStoresQuery();
 
   const [totalChart] = React.useState({
     series: [
@@ -548,18 +489,16 @@ const Stores = () => {
             </div>
             <ul className="table-top-head">
               {/* <TooltipIcons /> */}
-              <RefreshIcon />
-              <CollapesIcon />
+              {/* <RefreshIcon />
+              <CollapesIcon /> */}
             </ul>
             <div className="page-btn">
-              <Link
-                to="#"
+              <span
                 className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#add_Store"
+                onClick={() => navigate(`/admin/store/`)}
               >
                 <i className="ti ti-circle-plus me-1"></i> Add Store
-              </Link>
+              </span>
             </div>
           </div>
 
@@ -764,7 +703,7 @@ const Stores = () => {
             </div>
             <div className="card-body p-0">
               <div className="table-responsive">
-                <Table columns={columns} dataSource={data} />
+                <Table columns={columns} dataSource={stores?.data} />
               </div>
             </div>
           </div>
@@ -773,661 +712,13 @@ const Stores = () => {
       </div>
       {/* /Page Wrapper */}
       {/* Add Store */}
-      <div className="modal fade" id="add_Store">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">Add New Store</h4>
 
-              <button
-                type="button"
-                className="btn-close custom-btn-close p-0"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                <i className="ti ti-x" />
-              </button>
-            </div>
-            <form>
-              <div className="modal-body pb-0">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3 mb-4">
-                      <div className="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames">
-                        <i className="ti ti-photo" />
-                      </div>
-                      <div className="profile-upload">
-                        <div className="mb-2">
-                          <h6 className="mb-1">Upload Profile Image</h6>
-                          <p className="fs-12">Image should be below 4 mb</p>
-                        </div>
-                        <div className="profile-uploader d-flex align-items-center">
-                          <div className="drag-upload-btn btn btn-sm btn-primary me-2">
-                            Upload
-                            <input
-                              type="file"
-                              className="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <Link to="#" className="btn btn-secondary btn-sm">
-                            Cancel
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Name <span className="text-danger"> *</span>
-                      </label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Email Address</label>
-                      <input type="email" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="form-label">Account URL</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Phone Number <span className="text-danger"> *</span>
-                      </label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Website</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Password <span className="text-danger"> *</span>
-                      </label>
-                      <div className="pass-group">
-                        <input
-                          type={
-                            passwordVisibility.password ? 'text' : 'password'
-                          }
-                          className="pass-input form-control"
-                        />
-                        <span
-                          className={`ti toggle-passwords ${
-                            passwordVisibility.password
-                              ? 'ti-eye'
-                              : 'ti-eye-off'
-                          }`}
-                          onClick={() => togglePasswordVisibility('password')}
-                        ></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Confirm Password <span className="text-danger"> *</span>
-                      </label>
-                      <div className="pass-group">
-                        <input
-                          type={
-                            passwordVisibility.confirmPassword
-                              ? 'text'
-                              : 'password'
-                          }
-                          className="pass-input form-control"
-                        />
-                        <span
-                          className={`ti toggle-passwords ${
-                            passwordVisibility.confirmPassword
-                              ? 'ti-eye'
-                              : 'ti-eye-off'
-                          }`}
-                          onClick={() =>
-                            togglePasswordVisibility('confirmPassword')
-                          }
-                        ></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="form-label">Address</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Name <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planName}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Type <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planType}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Currency <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={currency}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Language <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={language}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">Status</label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={statusChoose}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light me-2"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary"
-                >
-                  Add Store
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
       {/* /Add Store */}
       {/* Edit Store */}
-      <div className="modal fade" id="edit_Store">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">Edit Store</h4>
-              <div className="d-flex align-items-center gap-3">
-                <div className="page-btn">
-                  {/* <Link
-                    to="/admin/dashboard"
-                    className="btn btn-primary"
-                    data-bs-toggle="modal"
-                    // data-bs-target="#add_Store"
-                  >
-                    <i className="ti ti-circle-plus me-1"></i> Add Product
-                  </Link> */}
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-bs-dismiss="modal"
-                    onClick={() => {
-                      navigate(`/admin/store/${storeId}/product`);
-                    }}
-                  >
-                    <i className="ti ti-circle-plus me-1"></i> Add Product
-                  </button>
-                </div>
 
-                <button
-                  type="button"
-                  className="btn-close custom-btn-close p-0"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <i className="ti ti-x" />
-                </button>
-              </div>
-            </div>
-            <form action="Stores.html">
-              <div className="modal-body pb-0">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3 mb-4">
-                      <div className="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames">
-                        <i className="ti ti-photo" />
-                      </div>
-                      <div className="profile-upload">
-                        <div className="mb-2">
-                          <h6 className="mb-1">Upload Profile Image</h6>
-                          <p className="fs-12">Image should be below 4 mb</p>
-                        </div>
-                        <div className="profile-uploader d-flex align-items-center">
-                          <div className="drag-upload-btn btn btn-sm btn-primary me-2">
-                            Upload
-                            <input
-                              type="file"
-                              className="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <Link to="#" className="btn btn-secondary btn-sm">
-                            Cancel
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Name <span className="text-danger"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="Stellar Dynamics"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Email Address</label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        defaultValue="sophie@example.com"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="form-label">Account URL</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="sd.example.com"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Phone Number <span className="text-danger"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="+1 895455450"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">Website</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="Admin Website"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Password <span className="text-danger"> *</span>
-                      </label>
-                      <div className="pass-group">
-                        <input
-                          type={
-                            passwordVisibility.password ? 'text' : 'password'
-                          }
-                          className="pass-input form-control"
-                        />
-                        <span
-                          className={`ti toggle-passwords ${
-                            passwordVisibility.password
-                              ? 'ti-eye'
-                              : 'ti-eye-off'
-                          }`}
-                          onClick={() => togglePasswordVisibility('password')}
-                        ></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Confirm Password <span className="text-danger"> *</span>
-                      </label>
-                      <div className="pass-group">
-                        <input
-                          type={
-                            passwordVisibility.confirmPassword
-                              ? 'text'
-                              : 'password'
-                          }
-                          className="pass-input form-control"
-                        />
-                        <span
-                          className={`ti toggle-passwords ${
-                            passwordVisibility.confirmPassword
-                              ? 'ti-eye'
-                              : 'ti-eye-off'
-                          }`}
-                          onClick={() =>
-                            togglePasswordVisibility('confirmPassword')
-                          }
-                        ></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="form-label">Address</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Name <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planName}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Type <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planType}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Currency <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={currency}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Language <span className="text-danger"> *</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={language}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3 ">
-                      <label className="form-label">Status</label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={statusChoose}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light me-2"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
       {/* /Edit Store */}
       {/* Upgrade Information */}
-      <div className="modal fade" id="upgrade_info">
-        <div className="modal-dialog modal-dialog-centered modal-lg">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">Upgrade Package</h4>
-              <button
-                type="button"
-                className="btn-close custom-btn-close p-0"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                <i className="ti ti-x" />
-              </button>
-            </div>
-            <div className="p-3 mb-1">
-              <div className="rounded bg-light p-3">
-                <h5 className="mb-3">Current Plan Details</h5>
-                <div className="row align-items-center">
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Store Name</p>
-                      <p className="text-gray-9">BrightWave Innovations</p>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Plan Name</p>
-                      <p className="text-gray-9">Advanced</p>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Plan Type</p>
-                      <p className="text-gray-9">Monthly</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center">
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Price</p>
-                      <p className="text-gray-9">200</p>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Register Date</p>
-                      <p className="text-gray-9">12 Sep 2024</p>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="mb-3">
-                      <p className="fs-12 mb-0">Expiring On</p>
-                      <p className="text-gray-9">11 Oct 2024</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <form action="Stores.html">
-              <div className="modal-body pb-0">
-                <h5 className="mb-4">Change Plan</h5>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Name <span className="text-danger">*</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planName}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3 ">
-                      <label className="form-label">
-                        Plan Type <span className="text-danger">*</span>
-                      </label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={planType}
-                        placeholder="Choose"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Ammount<span className="text-danger">*</span>
-                      </label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Payment Date <span className="text-danger">*</span>
-                      </label>
-                      <div className="input-icon-end position-relative">
-                        <DatePicker
-                          className="form-control datetimepicker"
-                          format={{
-                            format: 'DD-MM-YYYY',
-                            type: 'mask',
-                          }}
-                          getPopupContainer={getModalContainer}
-                          placeholder="DD-MM-YYYY"
-                        />
-                        <span className="input-icon-addon">
-                          <i className="ti ti-calendar text-gray-7" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Next Payment Date <span className="text-danger">*</span>
-                      </label>
-                      <div className="input-icon-end position-relative">
-                        <DatePicker
-                          className="form-control datetimepicker"
-                          format={{
-                            format: 'DD-MM-YYYY',
-                            type: 'mask',
-                          }}
-                          getPopupContainer={getModalContainer}
-                          placeholder="DD-MM-YYYY"
-                        />
-                        <span className="input-icon-addon">
-                          <i className="ti ti-calendar text-gray-7" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="mb-3">
-                      <label className="form-label">
-                        Expiring On <span className="text-danger">*</span>
-                      </label>
-                      <div className="input-icon-end position-relative">
-                        <DatePicker
-                          className="form-control datetimepicker"
-                          format={{
-                            format: 'DD-MM-YYYY',
-                            type: 'mask',
-                          }}
-                          getPopupContainer={getModalContainer}
-                          placeholder="DD-MM-YYYY"
-                        />
-                        <span className="input-icon-addon">
-                          <i className="ti ti-calendar text-gray-7" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light me-2"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+
       {/* /Upgrade Information */}
       {/* Store Detail */}
       <div className="modal fade" id="Store_detail">
@@ -1564,7 +855,7 @@ const Stores = () => {
       {/* /Store Detail */}
       <>
         {/* Delete Modal */}
-        <div className="modal fade" id="delete_modal">
+        {/* <div className="modal fade" id="delete_modal">
           <div className="modal-dialog modal-dialog-centered modal-sm">
             <div className="modal-content">
               <div className="modal-body text-center">
@@ -1595,8 +886,9 @@ const Stores = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* /Delete Modal */}
+        <CommonDeleteModal id={storeId} page={'Store'} deleteCb={deleteStore} />
       </>
     </>
   );

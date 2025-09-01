@@ -4,27 +4,27 @@ import FeatherIcon from 'feather-icons-react';
 import ImageWithBasePath from '../../core/img/imagewithbasebath';
 import { Search } from 'react-feather';
 import { all_routes } from '../../Router/all_routes';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 const Header = () => {
   const route = all_routes;
   const [toggle, SetToggle] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [flagImage, setFlagImage] = useState('assets/img/flags/us-flag.svg');
-  const { t, i18n } = useTranslation();
-  const changeLanguage = (lng) => {
-    // Debugging statement
-    i18n.changeLanguage(lng);
-    setFlagImage(
-      lng === 'en'
-        ? 'assets/img/flags/us-flag.svg'
-        : lng === 'fr'
-          ? 'assets/img/flags/fr.png'
-          : lng === 'es'
-            ? 'assets/img/flags/es.png'
-            : 'assets/img/flags/de.png'
-    );
-  };
+  // const [flagImage, setFlagImage] = useState('assets/img/flags/us-flag.svg');
+  // const { i18n } = useTranslation();
+  // const changeLanguage = (lng) => {
+  //   // Debugging statement
+  //   i18n.changeLanguage(lng);
+  //   setFlagImage(
+  //     lng === 'en'
+  //       ? 'assets/img/flags/us-flag.svg'
+  //       : lng === 'fr'
+  //         ? 'assets/img/flags/fr.png'
+  //         : lng === 'es'
+  //           ? 'assets/img/flags/es.png'
+  //           : 'assets/img/flags/de.png'
+  //   );
+  // };
   const isElementVisible = (element) => {
     return element.offsetWidth > 0 || element.offsetHeight > 0;
   };
@@ -217,17 +217,17 @@ const Header = () => {
                     </div>
                     <span className="input-group-text">
                       <kbd className="d-flex align-items-center">
-                        <img
+                        {/* <img
                           src="assets/img/icons/command.svg"
                           alt="img"
                           className="me-1"
-                        />
+                        /> */}
                         K
                       </kbd>
                     </span>
                   </div>
 
-                  <div
+                  {/* <div
                     className="dropdown-menu search-dropdown"
                     aria-labelledby="dropdownMenuClickable"
                   >
@@ -306,7 +306,7 @@ const Header = () => {
                         </li>
                       </ul>
                     </div>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </li>
@@ -319,7 +319,7 @@ const Header = () => {
                 className="dropdown-toggle nav-link select-store"
                 data-bs-toggle="dropdown"
               >
-                <span className="user-info">
+                {/* <span className="user-info">
                   <span className="user-letter">
                     <ImageWithBasePath
                       src="assets/img/store/store-01.png"
@@ -330,9 +330,9 @@ const Header = () => {
                   <span className="user-detail">
                     <span className="user-name">Freshmart</span>
                   </span>
-                </span>
+                </span> */}
               </Link>
-              <div className="dropdown-menu dropdown-menu-right">
+              {/* <div className="dropdown-menu dropdown-menu-right">
                 <Link to="#" className="dropdown-item">
                   <ImageWithBasePath
                     src="assets/img/store/store-01.png"
@@ -365,7 +365,7 @@ const Header = () => {
                   />
                   Grocery Eden
                 </Link>
-              </div>
+              </div> */}
             </li>
             {/* /Select Store */}
 
@@ -401,7 +401,7 @@ const Header = () => {
                       <span className="link-icon">
                         <i className="ti ti-shopping-bag" />
                       </span>
-                      <p>Purchase</p>
+                      <p>Store</p>
                     </Link>
                   </div>
                   <div className="col-md-2">
@@ -428,7 +428,7 @@ const Header = () => {
                       <p>Quotation</p>
                     </Link>
                   </div>
-                  <div className="col-md-2">
+                  {/* <div className="col-md-2">
                     <Link to={route.salesreturn} className="link-item">
                       <span className="link-icon">
                         <i className="ti ti-copy" />
@@ -443,8 +443,8 @@ const Header = () => {
                       </span>
                       <p>User</p>
                     </Link>
-                  </div>
-                  <div className="col-md-2">
+                  </div> */}
+                  {/* <div className="col-md-2">
                     <Link to={route.customer} className="link-item">
                       <span className="link-icon">
                         <i className="ti ti-users" />
@@ -459,8 +459,8 @@ const Header = () => {
                       </span>
                       <p>Biller</p>
                     </Link>
-                  </div>
-                  <div className="col-md-2">
+                  </div> */}
+                  {/* <div className="col-md-2">
                     <Link to={route.suppliers} className="link-item">
                       <span className="link-icon">
                         <i className="ti ti-user-check" />
@@ -475,11 +475,11 @@ const Header = () => {
                       </span>
                       <p>Transfer</p>
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </li>
-            <li className="nav-item pos-nav">
+            {/* <li className="nav-item pos-nav">
               <Link
                 to={route.pos}
                 className="btn btn-dark btn-md d-inline-flex align-items-center"
@@ -487,21 +487,21 @@ const Header = () => {
                 <i className="ti ti-device-laptop me-1" />
                 POS
               </Link>
-            </li>
+            </li> */}
 
             {/* Flag */}
             <li className="nav-item dropdown has-arrow flag-nav nav-item-box">
-              <Link
+              {/* <Link
                 className="nav-link dropdown-toggle"
                 data-bs-toggle="dropdown"
                 to="#"
                 role="button"
-              >
-                {/* <i data-feather="globe" /> */}
-                {/* <FeatherIcon icon="globe" /> */}
-                <ImageWithBasePath src={flagImage} alt="img" height={16} />
-              </Link>
-              <div className="dropdown-menu dropdown-menu-right">
+              >*/}
+              {/* <i data-feather="globe" /> */}
+              {/* <FeatherIcon icon="globe" /> */}
+              {/* <ImageWithBasePath src={flagImage} alt="img" height={16} />
+              </Link>  */}
+              {/* <div className="dropdown-menu dropdown-menu-right">
                 <Link
                   to="#"
                   className="dropdown-item active"
@@ -526,7 +526,7 @@ const Header = () => {
                   />{' '}
                   Arabic
                 </Link>
-              </div>
+              </div> */}
             </li>
             {/* /Flag */}
             <li className="nav-item nav-item-box">

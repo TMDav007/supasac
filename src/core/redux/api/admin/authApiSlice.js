@@ -1,35 +1,33 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { setCredentials } from '../../auth/authSlice';
+import { apiSlice } from '../apiSlice';
 
-export const authApiSlice = createApi({
-  reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3210/v1',
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.userToken;
-      if (token) {
-        // include token in req header
-        headers.set('authorization', `Bearer ${token}`);
-        return headers;
-      }
-    },
+export const authApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    login: builder.mutation({
+      query: (data) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body: data,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            setCredentials({
+              token: data.data.accessToken,
+              user: data.data.userInfo,
+            })
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    }),
+    userDetails: builder.query({
+      query: () => '/auth/me',
+    }),
   }),
-  endpoints: (builder) => {
-    return {
-      login: builder.mutation({
-        query: (data) => ({
-          url: '/auth/login',
-          method: 'POST',
-          body: data,
-        }),
-      }),
-      userDetails: builder.query({
-        query: () => ({
-          url: '/auth/me',
-          method: 'GET',
-        }),
-      }),
-    };
-  },
+  overrideExisting: false,
 });
 
 export const { useLoginMutation, useUserDetailsQuery } = authApiSlice;
