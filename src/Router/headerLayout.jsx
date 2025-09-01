@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ThemeSettings from '../InitialPage/themeSettings';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Header from '../InitialPage/Sidebar/Header';
 import Sidebar from '../InitialPage/Sidebar/Sidebar';
 import TwoColumnSidebar from '../InitialPage/Sidebar/two-column';
 import HorizontalSidebar from '../InitialPage/Sidebar/horizontalSidebar';
+import { USER_ROLE } from '../constants/authConstant';
 
 const HeaderLayouts = () => {
   const [showLoader, setShowLoader] = useState(true);
@@ -13,6 +14,7 @@ const HeaderLayouts = () => {
   const data = useSelector((state) => state.rootReducer.toggle_header);
   const dataWidth = useSelector((state) => state.themeSetting.dataWidth);
   const dataLayout = useSelector((state) => state.themeSetting.dataLayout);
+  const { user } = useSelector((state) => state?.auth);
   const dataSidebarAll = useSelector(
     (state) => state.themeSetting.dataSidebarAll
   );
@@ -45,6 +47,10 @@ const HeaderLayouts = () => {
       </div>
     );
   };
+
+  if (!user || user.role !== USER_ROLE.ADMIN) {
+    return <Navigate to={'/admin-signin'} />;
+  }
 
   return (
     <>

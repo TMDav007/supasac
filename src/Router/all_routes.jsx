@@ -4,8 +4,15 @@ export const all_routes = {
   register: '/register',
   forgotPassword: '/forgot-password',
   resetpassword: '/reset-password',
-
+  admin_edit_store: '/admin/store/:id',
+  admin_create_store: '/admin/store/',
   superadmindashboard: '/admin/dashboard',
   admin_stores: '/admin/stores',
   admin_store_product: '/admin/store/:id/product',
+  admin_category: '/admin/categories',
+  admin_create_category: '/admin/category',
+  admin_edit_category: '/admin/category/:id',
+  admin_subcategory: '/admin/subcategories',
+  admin_create_subcategory: '/admin/subcategory',
+  admin_edit_subcategory: '/admin/subcategory/:id',
 };

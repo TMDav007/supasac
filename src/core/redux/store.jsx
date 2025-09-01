@@ -1,19 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducer';
-import { authApiSlice } from './api/admin/authApiSlice';
-import authReducer from './auth/authSlice';
+import authReducer, { loadFromStorage } from './auth/authSlice';
 import themeSettingSlice from './themeSettingSlice';
+
+import { apiSlice } from './api/apiSlice';
 
 const store = configureStore({
   reducer: {
     rootReducer: rootReducer,
     auth: authReducer,
     themeSetting: themeSettingSlice,
-    [authApiSlice.reducerPath]: authApiSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(authApiSlice.middleware);
+    return getDefaultMiddleware().concat(apiSlice.middleware);
   },
 });
-
+// Load persisted auth before rendering
+store.dispatch(loadFromStorage());
 export default store;
